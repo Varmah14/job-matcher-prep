@@ -1,45 +1,54 @@
-# Hiring Café JSON → CSV Converter
+# Hiring Café Job Matcher – Phase 1 (JSON → Structured CSV)
 
-This project converts Hiring Café JSON job responses into clean, compact CSV files that can be used as input to an LLM, together with a user’s resume, to filter and rank job openings.
-
----
-
-## Purpose
-
-The main goal is to transform raw job posting JSON into token‑efficient CSV batches that are easy for an LLM to consume when matching jobs to a candidate’s resume.
+This project is part of a 4‑phase personal job‑matching pipeline. Phase 1 takes raw Hiring Café JSON responses and converts them into compact, deduplicated CSV batches ready to be scored by an LLM in later phases.
 
 ---
 
-## Features
+## Overview of the 4 Phases
 
-- Read multiple JSON response files from the `input_files` directory.
-- Extract only the required fields from each job (title, category, level, tools, summary, etc.).
-- Strip HTML tags from job descriptions to reduce noise and token usage.
-- Aggregate all jobs and write multiple CSV files, with up to **100 job openings per CSV**.
+1. **Phase 1 – JSON → CSV (this repo/script)**
+   - Read raw Hiring Café JSON files.
+   - Extract compact structured fields (no full job description).
+   - Deduplicate jobs.
+   - Write batched CSVs (100 jobs per file) for LLM screening.
+
+2. **Phase 2 – Filter CSV with LLM**
+   - Use an LLM with your resume + Phase‑1 CSVs.
+   - Classify each job: `apply now`, `consider`, or `skip`, plus a score and reason.
+   - Save classified CSVs.
+
+3. **Phase 3 – Add JD for high‑match jobs**
+   - Take high‑match jobs (e.g., `apply now`).
+   - Re‑scan original JSON to pull full job descriptions.
+   - Produce enriched CSVs with JD text for shortlisted jobs.
+
+4. **Phase 4 – Final job list with LLM**
+   - Use an LLM on the enriched CSV + resume.
+   - Generate final scores, explanations, tailored resume bullets, and cover‑letter snippets.
+
+This README focuses on **Phase 1**.
 
 ---
 
-## How it works
+## Phase 1 – Goal
 
-1. Place raw Hiring Café JSON response files into `input_files/`.
-2. Run the converter script.
-3. The script:
-   - Parses each JSON file.
-   - Picks only the selected fields from each job.
-   - Cleans job descriptions by removing HTML tags.
-   - Groups all jobs into batches of 100 and writes them as separate CSV files in `output/`.
-4. Use these CSV files as structured input to an LLM alongside a user’s resume to score and filter job matches based on keyword and skill alignment.
+Turn raw Hiring Café JSON responses into **token‑efficient, structured CSV batches** that:
+
+- Omit long job descriptions (JD) to keep prompts small.
+- Include the most relevant structured fields for resume–job matching.
+- Are deduplicated and limited to 100 jobs per file for easy batching into an LLM.
 
 ---
 
-## Project structure
+## Project Structure
 
 ```text
-project-root/
-  input_files/    # JSON response files from Hiring Café
-  output/         # Generated CSV files (100 jobs per CSV)
+job-matcher-prep/
+  input_files/                 # Raw Hiring Café JSON files (input)
+  output_phase1_structured/    # Phase-1 CSV batches (output)
   src/
-    main.py       # JSON → CSV conversion logic
+    __init__.py
+    main.py                    # Phase-1 pipeline: JSON → CSV
+    deduplication.py           # Deduplication logic
   README.md
-  .gitignore
 ```

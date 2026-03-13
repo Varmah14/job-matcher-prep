@@ -4,25 +4,27 @@ import os
 from html.parser import HTMLParser
 from math import ceil
 
-
-class HTMLStripper(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.text = []
-
-    def handle_data(self, data):
-        self.text.append(data)
-
-    def get_text(self):
-        return " ".join(self.text).strip()
+from deduplication import deduplicate_jobs
 
 
-def strip_html(html_string):
-    if not html_string:
-        return None
-    stripper = HTMLStripper()
-    stripper.feed(html_string)
-    return stripper.get_text()
+# class HTMLStripper(HTMLParser):
+#     def __init__(self):
+#         super().__init__()
+#         self.text = []
+
+#     def handle_data(self, data):
+#         self.text.append(data)
+
+#     def get_text(self):
+#         return " ".join(self.text).strip()
+
+
+# def strip_html(html_string):
+#     if not html_string:
+#         return None
+#     stripper = HTMLStripper()
+#     stripper.feed(html_string)
+#     return stripper.get_text()
 
 
 def pick_job_fields(data):
@@ -31,10 +33,10 @@ def pick_job_fields(data):
 
     for job in results:
         v5 = job.get("v5_processed_job_data", {})
-        job_info = job.get("job_information", {})
 
         picked.append(
             {
+                "id": job.get("id"),
                 "core_job_title": v5.get("core_job_title"),
                 "job_category": v5.get("job_category"),
                 "seniority_level": v5.get("seniority_level"),
@@ -61,10 +63,18 @@ def pick_job_fields(data):
                 "min_management_and_leadership_yoe": v5.get(
                     "min_management_and_leadership_yoe"
                 ),
+                "workplace_type": v5.get("workplace_type"),
+                "workplace_countries": ", ".join(v5.get("workplace_countries") or []),
+                "yearly_min_compensation": v5.get("yearly_min_compensation"),
+                "yearly_max_compensation": v5.get("yearly_max_compensation"),
                 "requirements_summary": v5.get("requirements_summary"),
                 "technical_tools": ", ".join(v5.get("technical_tools") or []),
                 "role_activities": ", ".join(v5.get("role_activities") or []),
-                "description": strip_html(job_info.get("description")),
+                "company_sector_and_industry": v5.get("company_sector_and_industry"),
+                "estimated_publish_date": v5.get("estimated_publish_date"),
+                "commitment": ", ".join(v5.get("commitment") or []),
+                "visa_sponsorship": v5.get("visa_sponsorship"),
+                # "description": strip_html(job_info.get("description")),
                 "company_name": v5.get("company_name"),
             }
         )
@@ -75,7 +85,8 @@ def pick_job_fields(data):
 def load_all_jobs(input_folder):
     all_jobs = []
 
-    json_files = [f for f in os.listdir(input_folder) if f.endswith(".json")]
+    # json_files = [f for f in os.listdir(input_folder) if f.endswith(".json")]
+    json_files = sorted(f for f in os.listdir(input_folder) if f.endswith(".json"))
     if not json_files:
         print("No JSON files found in the folder.")
         return []
@@ -116,25 +127,25 @@ def write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batc
     os.makedirs(output_folder, exist_ok=True)
 
     fieldnames = [
+        "id",
         "core_job_title",
         "job_category",
         "seniority_level",
         "role_type",
-        "associates_degree_requirement",
-        "associates_degree_fields_of_study",
-        "bachelors_degree_requirement",
-        "bachelors_degree_fields_of_study",
-        "masters_degree_requirement",
-        "masters_degree_fields_of_study",
-        "doctorate_degree_requirement",
-        "doctorate_degree_fields_of_study",
+        "commitment",
+        "company_name",
+        "company_sector_and_industry",
+        "workplace_type",
+        "workplace_countries",
+        "visa_sponsorship",
         "min_industry_and_role_yoe",
         "min_management_and_leadership_yoe",
         "requirements_summary",
         "technical_tools",
         "role_activities",
-        "description",
-        "company_name",
+        "yearly_min_compensation",
+        "yearly_max_compensation",
+        "estimated_publish_date",
     ]
 
     total = len(jobs)
@@ -148,7 +159,7 @@ def write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batc
         end = start + batch_size
         batch_jobs = jobs[start:end]
 
-        filename = f"{base_name}_{i+1:02d}.csv"
+        filename = f"{base_name}_{i+1:03d}.csv"
         out_path = os.path.join(output_folder, filename)
 
         with open(out_path, "w", newline="", encoding="utf-8") as f:
@@ -159,12 +170,33 @@ def write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batc
         print(f"  → {out_path} ({len(batch_jobs)} jobs)")
 
 
+# def main():
+#     input_folder = os.path.join(os.path.dirname(__file__), "..", "input_files")
+#     output_folder = os.path.join(os.path.dirname(__file__), "..", "output")
+#     jobs = load_all_jobs(input_folder)
+#     # jobs = deduplicate_jobs(jobs)
+
+#     before = len(jobs)
+#     jobs = deduplicate_jobs(jobs)
+#     after = len(jobs)
+
+#     print(f"Deduplicated: {before} → {after}")
+#     write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs")
+
+
 def main():
-    input_folder = os.path.join(os.path.dirname(__file__), "..", "input_files")
-    output_folder = os.path.join(os.path.dirname(__file__), "..", "output")
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    input_folder = os.path.join(project_root, "input_files")
+    output_folder = os.path.join(project_root, "output_phase1_structured")
 
     jobs = load_all_jobs(input_folder)
-    write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs")
+
+    before = len(jobs)
+    jobs = deduplicate_jobs(jobs)
+    after = len(jobs)
+    print(f"Deduplicated: {before} → {after}")
+
+    write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batch")
 
 
 if __name__ == "__main__":
