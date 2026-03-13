@@ -84,6 +84,17 @@ def load_all_jobs(input_folder):
 
     for filename in json_files:
         filepath = os.path.join(input_folder, filename)
+
+        # --- empty file check ---
+        try:
+            if os.path.getsize(filepath) == 0:
+                print(f"  ⧗ {filename} → Skipped (empty file)")
+                continue
+        except OSError as e:
+            print(f"  ✗ {filename} → Error checking size: {e}")
+            continue
+        # ------------------------
+
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)

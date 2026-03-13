@@ -3,3 +3,5 @@ __pycache__/
 .env
 .vscode/
 output/
+input_files/
+.DS_Store
