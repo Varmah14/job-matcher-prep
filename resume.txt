@@ -1,0 +1,52 @@
+MAHENDRA VARMA VADDI
+Boulder, CO | 303-994-3599 | varmamahendra14@gmail.com | linkedin.com/in/mahendra-varma-vaddi-a18456201/ | github.com/Varmah14
+TECHNICAL SKILLS
+Backend Development: Python, Go, Node.js (Loopback), TypeScript, JavaScript, Ruby, C++, RESTful APIs, Microservices
+Databases: PostgreSQL, MongoDB (query optimization), MySQL, Firestore, NoSQL, Database design and performance tuning
+System Design: Distributed systems, Event-driven architecture, API design, Scalability, Performance optimization
+Cloud & Infrastructure: AWS (Lambda, S3, EC2, EMR), GCP (Cloud Run, Pub/Sub, Firestore), Docker, Kubernetes
+Development Practices: Unit/Integration testing, CI/CD, Code review, Production debugging, Agile development
+WORK EXPERIENCE
+Kyndryl Technologies Senior Associate Software Developer Jun 2022 – Aug 2024
+Bangalore, India
+• Built and maintained RESTful APIs using Node.js (Loopback framework) powering enterprise modernization platform serving 1,200+
+clients; designed scalable backend architecture with 99.9% uptime and high availability
+• Developed distributed backend services using Python and Go on AWS (Lambda, S3, EMR); implemented event-driven data processing
+pipelines achieving 40% efficiency improvements through optimized algorithms and caching strategies
+• Optimized MongoDB query performance achieving 35% throughput improvement through index optimization and query refactoring;
+resolved production bottlenecks through systematic performance profiling and database tuning
+• Implemented comprehensive testing strategy achieving 85% code coverage with unit and integration tests; built CI/CD pipelines improving
+deployment reliability by 20% and reducing bug escape rate
+• Led production debugging and incident response across microservices architecture; resolved Docker memory issues eliminating 90% of
+container failures through resource optimization and monitoring improvements
+Kobeyo Jun 2025 – Aug 2025
+Jr. Data Scientist Boulder, CO
+• Designed and built RESTful APIs with Python processing 1,000+ entities with sub-200ms response times and 100% data accuracy;
+implemented comprehensive error handling, input validation, and structured logging
+• Developed high-performance multithreaded data processing pipelines reducing processing time by 90% (10 minutes to 1 minute per 1,000
+records); optimized algorithms and parallel processing for maximum throughput
+• Built scalable backend services with FastAPI integrating web scraping, LLM-based classification, and data storage; implemented automated
+workflows eliminating manual data processing tasks
+Microchip Technologies Jan 2022 – May 2022
+Software Developer Intern Bangalore, India
+• Developed production database solutions and backend services with Salesforce Lightning Components; contributed to 40% defect
+reduction through rigorous testing and code quality practices
+PROJECTS
+Distributed Cloud Platform (DRBFO) | Go, Python, FastAPI, GCP, Docker • Architected microservices-based backend platform with 4 independent services using Go and Python; implemented event-driven
+architecture with Google Cloud Pub/Sub achieving 99.9% uptime and horizontal scalability
+• Built RESTful APIs with FastAPI for job orchestration and state management; designed database schema in Firestore optimizing for
+read/write patterns and implementing efficient query strategies
+• Implemented fault-tolerant backend with dead-letter queues, exponential backoff retries, and idempotent request handling; achieved
+exactly-once processing semantics across distributed services
+2025
+Ruby Language Compiler | Ruby, LLVM, C++ 2024
+• Developed compiler backend implementing parsing, semantic analysis, and code generation using C++ and LLVM; validated correctness
+across 500+ test cases covering language features and edge cases
+EDUCATION
+University of Colorado Boulder Master of Science, Data Science; GPA: 3.8/4.0 PES University ADDITIONAL
+Bachelor of Technology, Computer Science; CGPA: 7.91/10 | GATE 2022: Top 0.7% (Rank 1048) Aug 2024 – May 2026
+Boulder, CO
+Aug 2018 – Aug 2022
+Bangalore, India
+Achievements: 3rd Place, Colorado Impact Hackathon (Google & Colorado Energy Office, Nov 2025)
+Languages: English, Hindi, Telugu, Kannada, Tamil | Authorization: F-1 Visa (OPT eligible May 2026)

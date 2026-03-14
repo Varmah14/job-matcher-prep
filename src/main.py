@@ -119,7 +119,7 @@ def load_all_jobs(input_folder):
     return all_jobs
 
 
-def write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batch"):
+def write_batched_csvs(jobs, output_folder, batch_size=30, base_name="jobs_batch"):
     if not jobs:
         print("No jobs to write.")
         return
@@ -132,22 +132,31 @@ def write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batc
         "job_category",
         "seniority_level",
         "role_type",
-        "commitment",
-        "company_name",
-        "company_sector_and_industry",
-        "workplace_type",
-        "workplace_countries",
-        "visa_sponsorship",
+        # degree fields
+        "associates_degree_requirement",
+        "associates_degree_fields_of_study",
+        "bachelors_degree_requirement",
+        "bachelors_degree_fields_of_study",
+        "masters_degree_requirement",
+        "masters_degree_fields_of_study",
+        "doctorate_degree_requirement",
+        "doctorate_degree_fields_of_study",
+        # rest
         "min_industry_and_role_yoe",
         "min_management_and_leadership_yoe",
+        "workplace_type",
+        "workplace_countries",
+        "yearly_min_compensation",
+        "yearly_max_compensation",
         "requirements_summary",
         "technical_tools",
         "role_activities",
-        "yearly_min_compensation",
-        "yearly_max_compensation",
+        "company_sector_and_industry",
         "estimated_publish_date",
+        "commitment",
+        "visa_sponsorship",
+        "company_name",
     ]
-
     total = len(jobs)
     num_batches = ceil(total / batch_size)
     print(
@@ -196,7 +205,7 @@ def main():
     after = len(jobs)
     print(f"Deduplicated: {before} → {after}")
 
-    write_batched_csvs(jobs, output_folder, batch_size=100, base_name="jobs_batch")
+    write_batched_csvs(jobs, output_folder, batch_size=50, base_name="jobs_batch")
 
 
 if __name__ == "__main__":

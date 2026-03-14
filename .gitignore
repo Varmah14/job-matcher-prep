@@ -2,6 +2,11 @@ __pycache__/
 *.pyc
 .env
 .vscode/
+
+# input output files
 output/
+output_phase1_structured/
+output_phase2_classified
 input_files/
+# resume.txt
 .DS_Store
